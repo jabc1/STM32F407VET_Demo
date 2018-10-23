@@ -151,13 +151,18 @@ void queue_init()
 }
 void taskrun()
 {
-	if(Queue_Get(&Uart1queue,&Uart1fifo.Txbuff))//
+	uint8_t find;
+	if(Queue_Query(&Uart1queue,&find))//队列查询
 	{
-		printf("Queue_Get:%s\r\n",Uart1fifo.Txbuff);
-	}
-	if(Queue_Query(&Uart1queue,&Uart1fifo.Rxbuff))
-	{
-		printf("Queue_Query:%s\r\n",Uart1fifo.Rxbuff);
+		printf("Queue_Query:%d\r\n",find);
+		if(find == 0x61)//进行队列查找知道找到正确的数据
+		{
+			while(Queue_Get(&Uart1queue,&Uart1fifo.Txbuff))//找到数据头进行全部队列出队操作
+			{
+				printf("Queue_Get:%s\r\n",Uart1fifo.Txbuff);
+			}
+		}
+		Queue_Get(&Uart1queue,&find);//进行队列后移
 	}
 }
 

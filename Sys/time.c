@@ -1,6 +1,7 @@
 #include "time.h"
 #include "Sys.h"
 #include "gpio.h"
+#include "uart.h"
 /*
 	Tout = （（arr+1）*（psc+1））/Tclk ;
 其中：
@@ -92,7 +93,7 @@ void TIM3_IRQHandler(void)
 			__HAL_TIM_CLEAR_IT(&htim3, TIM_IT_UPDATE);
 			//HAL_TIM_PeriodElapsedCallback(&htim3);
 			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, !HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_7));
-			//printf("time test");
+			//taskrun();
 		}
 	}
 }
