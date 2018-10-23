@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>.\core;.\HAL\STM32F4xx_HAL_Driver\Inc;.\HAL\STM32F4xx_HAL_Driver\Inc\Legacy;.\User;.\HAL;.\Sys</IncludePath>
+              <IncludePath>.\core;.\HAL\STM32F4xx_HAL_Driver\Inc;.\HAL\STM32F4xx_HAL_Driver\Inc\Legacy;.\User;.\HAL;.\Sys;.\Lib</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -459,6 +459,31 @@
               <FileName>def.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Sys\def.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Lib</GroupName>
+          <Files>
+            <File>
+              <FileName>fifo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Lib\fifo.c</FilePath>
+            </File>
+            <File>
+              <FileName>fifo.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Lib\fifo.h</FilePath>
+            </File>
+            <File>
+              <FileName>queue_jk.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Lib\queue_jk.c</FilePath>
+            </File>
+            <File>
+              <FileName>queue_jk.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Lib\queue_jk.h</FilePath>
             </File>
           </Files>
         </Group>

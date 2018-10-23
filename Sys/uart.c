@@ -1,15 +1,16 @@
 #include "uart.h"
-#include "def.h"
-_Uart1 Uart1;
+
 
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 
+QueueType Uart1queue;//结构体变量
+_Uart1fifo Uart1fifo;//fifo结构体
 
+_Uart1 Uart1;//结构体变量
 
 /* USART1 init function */
-	uint8_t  temp;
 void MX_USART1_UART_Init(void)
 {
 
@@ -144,12 +145,34 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
   /* USER CODE END USART2_MspDeInit 1 */
   }
 } 
+void queue_init()
+{
+	Queue_Init(&Uart1queue,Uart1fifo.Rxbuff,uart1len,2);
+}
 
 
-
-
+#ifdef user_fifo
+void uart1_idle()//适用于fifo
+{
+	uint8_t temp;
+	if((__HAL_UART_GET_FLAG(&huart1,UART_FLAG_RXNE)!=RESET))//receive data
+	{
+		temp = (uint8_t)(huart1.Instance->DR&(uint8_t)0x00FF);
+		Queue_Put(&Uart1queue,&temp);
+		__HAL_UART_CLEAR_FLAG(&huart1,UART_FLAG_RXNE);//clear receive irq
+		
+	}
+//	if((__HAL_UART_GET_FLAG(&huart1,UART_FLAG_IDLE)!=RESET))//receive stop 
+//	{
+//		__HAL_UART_CLEAR_FLAG(&huart1,UART_FLAG_IDLE);
+//		__HAL_UART_ENABLE_IT(&huart1,UART_IT_RXNE);
+//		__HAL_UART_DISABLE_IT(&huart1,UART_IT_IDLE);
+//	}
+}
+#else
 void uart1_idle()//适用用于结构体
 {
+	uint8_t temp;
 	if((__HAL_UART_GET_FLAG(&huart1,UART_FLAG_RXNE)!=RESET))//receive data
 	{
 		temp = (uint8_t)(huart1.Instance->DR&(uint8_t)0x00FF);
@@ -174,7 +197,7 @@ void uart1_idle()//适用用于结构体
 		__HAL_UART_DISABLE_IT(&huart1,UART_IT_IDLE);
 	}
 }
-
+#endif
 
 /**
 * @brief This function handles USART1 global interrupt.
@@ -186,7 +209,7 @@ void USART1_IRQHandler(void)
 }
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-
+	uint8_t temp=0;
 	if(huart->Instance == USART1)
 	{
 		HAL_UART_Receive_IT(&huart1,&temp,1);

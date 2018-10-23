@@ -5,6 +5,10 @@
 #include "gpio.h"
 #include "uart.h"
 #include "time.h"
+#include "fifo.h"
+#include "queue_jk.h"
+
+
 static void MX_NVIC_Init(void);
 
 int main(void)
@@ -17,19 +21,22 @@ int main(void)
 	MX_USART2_UART_Init();
 	MX_TIM3_Init();
 	MX_NVIC_Init();
+	queue_init();
 	while (1)
 	{
-		if(Uart1.status == uart1over)
+//		if(Uart1.status == uart1over)
+//		{
+//			Uart1.status = uart1head;
+//			printf("re:%s\r\n",Uart1.buff);
+//			memset(Uart1.buff,0,sizeof(Uart1.buff));
+//		}
+		//if(Queue_Get(&Uart1queue,&Uart1fifo.Txbuff))//Queue_Query
+		
+		if(Queue_Get(&Uart1queue,&Uart1fifo.Txbuff))//
 		{
-			Uart1.status = uart1head;
-			printf("re:%s\r\n",Uart1.buff);
-			memset(Uart1.buff,0,sizeof(Uart1.buff));
+			printf("%4d\r\n",Queue_GetFreeNum(&Uart1queue));
+			printf("send:%s\r\n",Uart1fifo.Txbuff);
 		}
-//		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_RESET);
-//		HAL_Delay(200);
-//		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_SET);
-//		HAL_Delay(200);
-//		printf("f4test");
 	}
 }
 
