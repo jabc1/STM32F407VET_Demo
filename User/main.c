@@ -30,12 +30,13 @@ int main(void)
 //			printf("re:%s\r\n",Uart1.buff);
 //			memset(Uart1.buff,0,sizeof(Uart1.buff));
 //		}
-		//if(Queue_Get(&Uart1queue,&Uart1fifo.Txbuff))//Queue_Query
-		
 		if(Queue_Get(&Uart1queue,&Uart1fifo.Txbuff))//
 		{
-			printf("%4d\r\n",Queue_GetFreeNum(&Uart1queue));
-			printf("send:%s\r\n",Uart1fifo.Txbuff);
+			printf("Queue_Get:%s\r\n",Uart1fifo.Txbuff);
+		}
+		if(Queue_Query(&Uart1queue,&Uart1fifo.Rxbuff))
+		{
+			printf("Queue_Query:%s\r\n",Uart1fifo.Rxbuff);
 		}
 	}
 }
