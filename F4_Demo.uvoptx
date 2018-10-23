@@ -133,7 +133,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>/</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -147,6 +146,13 @@
         </SetRegEntry>
       </TargetDriverDllRegistry>
       <Breakpoint/>
+      <WatchWindow1>
+        <Ww>
+          <count>0</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>temp</ItemText>
+        </Ww>
+      </WatchWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>
       </Tracepoint>
@@ -191,7 +197,7 @@
       <pMultCmdsp></pMultCmdsp>
       <SystemViewers>
         <Entry>
-          <Name>System Viewer\TIM3</Name>
+          <Name>System Viewer\USART1</Name>
           <WinId>35905</WinId>
         </Entry>
       </SystemViewers>
@@ -366,7 +372,7 @@
 
   <Group>
     <GroupName>Config</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

@@ -1,13 +1,15 @@
 #include "uart.h"
 #include "def.h"
-UART_HandleTypeDef huart1;
-UART_HandleTypeDef huart2;
+_Uart1 Uart1;
 
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
+
+
+
 
 /* USART1 init function */
-
+	uint8_t  temp;
 void MX_USART1_UART_Init(void)
 {
 
@@ -23,7 +25,8 @@ void MX_USART1_UART_Init(void)
 	{
 		_Error_Handler(__FILE__, __LINE__);
 	}
-
+	__HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);//使能串口接收中断
+	Uart1.status = uart1head;
 }
 /* USART2 init function */
 
@@ -142,26 +145,95 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
   }
 } 
 
+
+
+
+void uart1_idle()//适用用于结构体
+{
+	if((__HAL_UART_GET_FLAG(&huart1,UART_FLAG_RXNE)!=RESET))//receive data
+	{
+		temp = (uint8_t)(huart1.Instance->DR&(uint8_t)0x00FF);
+		__HAL_UART_CLEAR_FLAG(&huart1,UART_FLAG_RXNE);//clear receive irq
+		if(Uart1.status == uart1head)
+		{
+			Uart1.status = uart1read;
+			Uart1.len = 0;
+			Uart1.buff[Uart1.len++] = temp;
+			__HAL_UART_ENABLE_IT(&huart1,UART_IT_IDLE);//start idle irq
+		}
+		else if(Uart1.status == uart1read)
+		{
+			Uart1.buff[Uart1.len++] = temp;
+		}
+	}
+	if((__HAL_UART_GET_FLAG(&huart1,UART_FLAG_IDLE)!=RESET))//receive stop 
+	{
+		Uart1.status = uart1over;
+		__HAL_UART_CLEAR_FLAG(&huart1,UART_FLAG_IDLE);
+		__HAL_UART_ENABLE_IT(&huart1,UART_IT_RXNE);
+		__HAL_UART_DISABLE_IT(&huart1,UART_IT_IDLE);
+	}
+}
+
+
+/**
+* @brief This function handles USART1 global interrupt.
+*/
+void USART1_IRQHandler(void)
+{
+	//HAL_UART_IRQHandler(&huart1);
+	uart1_idle();
+}
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+
+	if(huart->Instance == USART1)
+	{
+		HAL_UART_Receive_IT(&huart1,&temp,1);
+	}
+}
+/**
+* @brief This function handles USART2 global interrupt.
+*/
+void USART2_IRQHandler(void)
+{
+	;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* USER CODE BEGIN 1 */
 #ifdef debug_print
-//标准库需要的支持函数                 
 struct __FILE 
 { 
 	int handle; 
 
 }; 
-
 FILE __stdout;       
 //定义_sys_exit()以避免使用半主机模式    
 void _sys_exit(int x) 
 { 
 	x = x; 
 } 
-//重定义fputc函数 
 int fputc(int ch, FILE *f)
 {      
 	while((USART1->SR&0X40)==0)
-		;//循环发送,直到发送完毕   
+		;
     USART1->DR = (unsigned char) ch;      
 	return ch;
 }

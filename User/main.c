@@ -16,15 +16,20 @@ int main(void)
 	MX_USART1_UART_Init();
 	MX_USART2_UART_Init();
 	MX_TIM3_Init();
-
 	MX_NVIC_Init();
 	while (1)
 	{
+		if(Uart1.status == uart1over)
+		{
+			Uart1.status = uart1head;
+			printf("re:%s\r\n",Uart1.buff);
+			memset(Uart1.buff,0,sizeof(Uart1.buff));
+		}
 //		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_RESET);
 //		HAL_Delay(200);
 //		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_SET);
 //		HAL_Delay(200);
-		//printf("f4test");
+//		printf("f4test");
 	}
 }
 
