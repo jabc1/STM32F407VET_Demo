@@ -4,6 +4,7 @@
 #include "Sys.h"
 #include "gpio.h"
 #include "uart.h"
+#include "time.h"
 static void MX_NVIC_Init(void);
 
 int main(void)
@@ -14,13 +15,16 @@ int main(void)
 	MX_GPIO_Init();
 	MX_USART1_UART_Init();
 	MX_USART2_UART_Init();
+	MX_TIM3_Init();
+
 	MX_NVIC_Init();
 	while (1)
 	{
-		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_RESET);
-		HAL_Delay(200);
-		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_SET);
-		HAL_Delay(200);
+//		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_RESET);
+//		HAL_Delay(200);
+//		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_SET);
+//		HAL_Delay(200);
+		//printf("f4test");
 	}
 }
 
@@ -33,6 +37,9 @@ static void MX_NVIC_Init(void)
 	/* USART2_IRQn interrupt configuration */
 	HAL_NVIC_SetPriority(USART2_IRQn, 0, 0);
 	HAL_NVIC_EnableIRQ(USART2_IRQn);
+	/* TIM3_IRQn interrupt configuration */
+	HAL_NVIC_SetPriority(TIM3_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(TIM3_IRQn);	
 }
 
 
