@@ -40,5 +40,6 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle);
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle);
 
 void queue_init(void);
+void taskrun(void);
 #endif
 

@@ -149,7 +149,17 @@ void queue_init()
 {
 	Queue_Init(&Uart1queue,Uart1fifo.Rxbuff,uart1len,2);
 }
-
+void taskrun()
+{
+	if(Queue_Get(&Uart1queue,&Uart1fifo.Txbuff))//
+	{
+		printf("Queue_Get:%s\r\n",Uart1fifo.Txbuff);
+	}
+	if(Queue_Query(&Uart1queue,&Uart1fifo.Rxbuff))
+	{
+		printf("Queue_Query:%s\r\n",Uart1fifo.Rxbuff);
+	}
+}
 
 #ifdef user_fifo
 void uart1_idle()//  ”√”⁄fifo
