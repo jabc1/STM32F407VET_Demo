@@ -25,6 +25,7 @@ int main(void)
 	MX_TIM3_Init();
 	MX_NVIC_Init();
 	queue_init();
+	esp8266_init();
 	while (1)
 	{
 //		if(Uart1.status == uart1over)
@@ -33,11 +34,11 @@ int main(void)
 //			printf("re:%s\r\n",Uart1.buff);
 //			memset(Uart1.buff,0,sizeof(Uart1.buff));
 //		}
-//		SysTick_delay_ms(200);
+//		SysTick_delay_ms(500);
 //		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, !HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_7));
-		//taskrun();
-		//test2run();
-		//esp8266_test();
+//		HAL_Delay(1000);
+//		taskrun();
+//		test2run();
 	}
 }
 

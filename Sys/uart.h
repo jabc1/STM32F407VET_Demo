@@ -32,7 +32,7 @@ typedef struct _Uart2fifo
 	u8 Rxbuff[uart2len];
 	u8 Txbuff[uart2len];
 }_Uart2fifo;
-#pragma pack(push)
+#pragma pack(pop)
 
 extern _Uart1 Uart1;
 
