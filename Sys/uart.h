@@ -6,6 +6,8 @@
 #include "queue_jk.h"
 
 #define 	uart1len		512
+#define 	uart2len		1024
+
 #define		uart1head		1
 #define		uart1read		2
 #define		uart1over		3
@@ -18,19 +20,26 @@ typedef struct _Uart1
 	u16 len;
 	u8 status;
 }_Uart1;
-#pragma pack(push)
 
-#pragma pack(push,1)
 typedef struct _Uart1fifo
 {
 	u8 Rxbuff[uart1len];
 	u8 Txbuff[uart1len];
 }_Uart1fifo;
+
+typedef struct _Uart2fifo
+{
+	u8 Rxbuff[uart2len];
+	u8 Txbuff[uart2len];
+}_Uart2fifo;
 #pragma pack(push)
 
 extern _Uart1 Uart1;
+
 extern QueueType Uart1queue;
+extern QueueType Uart2queue;
 extern _Uart1fifo Uart1fifo;
+extern _Uart2fifo Uart2fifo;//fifo½á¹¹Ìå
 
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart2;
@@ -41,5 +50,6 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle);
 
 void queue_init(void);
 void taskrun(void);
+void test2run(void);
 #endif
 

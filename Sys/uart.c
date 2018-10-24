@@ -6,9 +6,12 @@ UART_HandleTypeDef huart2;
 
 
 QueueType Uart1queue;//结构体变量
-_Uart1fifo Uart1fifo;//fifo结构体
-
+QueueType Uart2queue;//结构体变量
 _Uart1 Uart1;//结构体变量
+
+_Uart1fifo Uart1fifo;//fifo结构体
+_Uart2fifo Uart2fifo;//fifo结构体
+
 
 /* USART1 init function */
 void MX_USART1_UART_Init(void)
@@ -46,7 +49,7 @@ void MX_USART2_UART_Init(void)
 	{
 		_Error_Handler(__FILE__, __LINE__);
 	}
-
+	__HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);//使能串口接收中断
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
@@ -148,16 +151,17 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 void queue_init()
 {
 	Queue_Init(&Uart1queue,Uart1fifo.Rxbuff,uart1len,2);
+	Queue_Init(&Uart2queue,Uart2fifo.Rxbuff,uart2len,1);
 }
 void taskrun()
 {
 	uint8_t find;
 	if(Queue_Query(&Uart1queue,&find))//队列查询
 	{
-		printf("Queue_Query:%d\r\n",find);
+		printf("Queue_Query:%x\r\n",find);
 		if(find == 0x61)//进行队列查找知道找到正确的数据
 		{
-			while(Queue_Get(&Uart1queue,&Uart1fifo.Txbuff))//找到数据头进行全部队列出队操作
+			while(Queue_Get(&Uart1queue,&Uart1fifo.Txbuff))//找到数据头进行全部队列出队操作,进行一个一个数据出队操作
 			{
 				printf("Queue_Get:%s\r\n",Uart1fifo.Txbuff);
 			}
@@ -165,6 +169,24 @@ void taskrun()
 		Queue_Get(&Uart1queue,&find);//进行队列后移
 	}
 }
+void test2run()
+{
+	_Uart2fifo Uart3fifo;
+	uint8_t find;
+	u16 i = 0;
+	if(Queue_Query(&Uart2queue,&find))//队列查询
+	{
+		HAL_Delay(50);
+		while(Queue_Get(&Uart2queue,&Uart3fifo.Txbuff[i++]))
+		{
+			;
+		}
+		Uart3fifo.Txbuff[i++] = '@';
+		Uart3fifo.Txbuff[i] = 0;
+		printf("Queue_Get_t:%s\r\n",Uart3fifo.Txbuff);
+	}
+}
+
 
 #ifdef user_fifo
 void uart1_idle()//适用于fifo
@@ -172,19 +194,14 @@ void uart1_idle()//适用于fifo
 	uint8_t temp;
 	if((__HAL_UART_GET_FLAG(&huart1,UART_FLAG_RXNE)!=RESET))//receive data
 	{
-		temp = (uint8_t)(huart1.Instance->DR&(uint8_t)0x00FF);
+		temp = ((huart1.Instance->DR)&0xFF);
 		Queue_Put(&Uart1queue,&temp);
-		__HAL_UART_CLEAR_FLAG(&huart1,UART_FLAG_RXNE);//clear receive irq
-		
+		__HAL_UART_CLEAR_FLAG(&huart1,UART_FLAG_RXNE);//clear receive irq		
 	}
-//	if((__HAL_UART_GET_FLAG(&huart1,UART_FLAG_IDLE)!=RESET))//receive stop 
-//	{
-//		__HAL_UART_CLEAR_FLAG(&huart1,UART_FLAG_IDLE);
-//		__HAL_UART_ENABLE_IT(&huart1,UART_IT_RXNE);
-//		__HAL_UART_DISABLE_IT(&huart1,UART_IT_IDLE);
-//	}
+
 }
 #else
+
 void uart1_idle()//适用用于结构体
 {
 	uint8_t temp;
@@ -229,13 +246,33 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	{
 		HAL_UART_Receive_IT(&huart1,&temp,1);
 	}
+	else if(huart->Instance == USART2)
+	{
+		HAL_UART_Receive_IT(&huart2,&temp,1);
+	}	
 }
+
+
+void uart2_idle()
+{
+	uint8_t temp;
+	if((__HAL_UART_GET_FLAG(&huart2,UART_FLAG_RXNE)!=RESET))//receive data
+	{
+		temp = ((huart2.Instance->DR)&0xFF);
+		Queue_Put(&Uart2queue,&temp);
+		__HAL_UART_CLEAR_FLAG(&huart2,UART_FLAG_RXNE);//clear receive irq		
+	}
+}
+
+
+
 /**
 * @brief This function handles USART2 global interrupt.
 */
 void USART2_IRQHandler(void)
 {
-	;
+	//HAL_UART_IRQHandler(&huart2);
+	uart2_idle();
 }
 
 
@@ -270,9 +307,9 @@ void _sys_exit(int x)
 } 
 int fputc(int ch, FILE *f)
 {      
-	while((USART1->SR&0X40)==0)
+	while((USART2->SR&0X40)==0)
 		;
-    USART1->DR = (unsigned char) ch;      
+    USART2->DR = (uint8_t)ch;      
 	return ch;
 }
 #endif

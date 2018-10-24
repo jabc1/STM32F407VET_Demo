@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>.\core;.\HAL\STM32F4xx_HAL_Driver\Inc;.\HAL\STM32F4xx_HAL_Driver\Inc\Legacy;.\User;.\HAL;.\Sys;.\Lib</IncludePath>
+              <IncludePath>.\core;.\HAL\STM32F4xx_HAL_Driver\Inc;.\HAL\STM32F4xx_HAL_Driver\Inc\Legacy;.\User;.\HAL;.\Sys;.\Lib;.\App</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -535,6 +535,16 @@
               <FileType>5</FileType>
               <FilePath>.\Sys\uart.h</FilePath>
             </File>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Sys\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>delay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Sys\delay.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -584,6 +594,18 @@
         </Group>
         <Group>
           <GroupName>App</GroupName>
+          <Files>
+            <File>
+              <FileName>esp8266.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App\esp8266.c</FilePath>
+            </File>
+            <File>
+              <FileName>esp8266.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\App\esp8266.h</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>ReadME</GroupName>

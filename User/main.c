@@ -2,11 +2,14 @@
 #include "stdio.h"
 #include "stm32f4xx_hal.h"
 #include "Sys.h"
+#include "delay.h"
 #include "gpio.h"
 #include "uart.h"
 #include "time.h"
 #include "fifo.h"
 #include "queue_jk.h"
+#include "esp8266.h"
+
 
 
 static void MX_NVIC_Init(void);
@@ -30,7 +33,11 @@ int main(void)
 //			printf("re:%s\r\n",Uart1.buff);
 //			memset(Uart1.buff,0,sizeof(Uart1.buff));
 //		}
-		taskrun();
+//		SysTick_delay_ms(200);
+//		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, !HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_7));
+		//taskrun();
+		//test2run();
+		//esp8266_test();
 	}
 }
 

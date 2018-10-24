@@ -27,7 +27,7 @@ bool Queue_Init(QueueType* q, void* pool, u32 buffer_size, u32 item_size)
     return true;
 }
 
-bool Queue_Put(QueueType* q, const void* pdata)
+bool Queue_Put(QueueType* q, const void* pdata)//一个一个进行数据入队操作
 {
     if(q->itemCount == q->itemMax)
     {
