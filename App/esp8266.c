@@ -20,18 +20,46 @@ u8* esp_8266_check_cmd(u8 *str)
 	strx=strstr((const char*)&esp_uart.Txbuff[0],(const char*)str);//从前面字符串中查找ack并返回
 	return (u8*)strx;//返回找到的字符串进行处理
 }
-u8* esp_8266_check_cmd2(u8 *str)
+u8* esp_8266_check_cmd1(u8 *str)//STAMAC
 {
-	char *strx=0;
+	u8 *strx=NULL;
 	_Uart2fifo esp_uart;
 	u16 i = 0;
+	
+	strx = (u8 *)malloc(100 * sizeof(u8)); 
+	if (NULL == strx)
+	{ 
+		return NULL;
+	}
 	while(Queue_Get(&Uart2queue,&esp_uart.Txbuff[i++]))
 	{
 		;
 	}
 	esp_uart.Txbuff[i] = 0;//结束标志
 	strx=strstr((const char*)&esp_uart.Txbuff[0],(const char*)str);//从前面字符串中查找ack并返回
-	strncpy(&Idinfo.buff[0],strx,100);
+	strncpy(&Idinfo.macbuff[0],(u8 *)strx,60);
+	free(strx);
+	return (u8*)strx;//返回找到的字符串进行处理
+}
+u8* esp_8266_check_cmd2(u8 *str)//STAIP
+{
+	u8 *strx=NULL;
+	_Uart2fifo esp_uart;
+	u16 i = 0;
+	
+	strx = (u8 *)malloc(100 * sizeof(u8)); 
+	if (NULL == strx)
+	{ 
+		return NULL;
+	}
+	while(Queue_Get(&Uart2queue,&esp_uart.Txbuff[i++]))
+	{
+		;
+	}
+	esp_uart.Txbuff[i] = 0;//结束标志
+	strx=strstr((const char*)&esp_uart.Txbuff[0],(const char*)str);//从前面字符串中查找ack并返回
+	strncpy(&Idinfo.ipbuff[0],(u8 *)strx,60);
+	free(strx);
 	return (u8*)strx;//返回找到的字符串进行处理
 }
 /*
@@ -51,7 +79,16 @@ u8 esp_8266_send_cmd(u8 *cmd,u8 *ack,u16 waittime)
 			{
 				if(NULL==strcmp("STAIP",ack))
 				{
+					SysTick_delay_ms(50);
 					if(esp_8266_check_cmd2(ack))
+					{
+						break;
+					}					
+				}
+				else if(NULL==strcmp("STAMAC",ack))
+				{
+					SysTick_delay_ms(50);
+					if(esp_8266_check_cmd1(ack))
 					{
 						break;
 					}					
@@ -87,11 +124,9 @@ void esp8266_init()
 	SysTick_delay_ms(500);
 	esp_8266_send_cmd(RST,"OK",300);//重启模块,设置摸得生效
 	SysTick_delay_ms(500);
-	esp_8266_send_cmd(CWJAP,"OK",300);//连接wifi
-	SysTick_delay_ms(500);
-	esp_8266_send_cmd(CIFSR,"STAIP",300);//查询wifi信息
-//	SysTick_delay_ms(500);
-//	esp_8266_send_cmd(CIFSR,"STAMAC",300);//查询wifi信息
+	while(esp_8266_send_cmd(CWJAP,"OK",500));//连接wifi
+	while(esp_8266_send_cmd(CIFSR,"STAMAC",300));//查询wifi信息
+	while(esp_8266_send_cmd(CIFSR,"STAIP",300));//查询wifi信息
 	SysTick_delay_ms(500);
 	esp_8266_send_cmd(CIPMUX,"OK",300);//设置但连接
 	SysTick_delay_ms(500);

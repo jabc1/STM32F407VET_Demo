@@ -24,13 +24,12 @@
 //查询IP，因为有STA和AP两个模式，所以有两组MAC和IP，常见的是192.168.x.x局域网IP
 #define 	CIFSR       "AT+CIFSR\r\n"
 
-#define		idlen		150
+#define		idlen		60
 #pragma pack(push,1)
 typedef struct _IDINFO
 {
-	u8 buff[idlen];
-	u8 ipbuff[20];
-	u8 macbuff[20];
+	u8 ipbuff[idlen];
+	u8 macbuff[idlen];
 }_IDINFO;
 #pragma pack(pop) 
 
