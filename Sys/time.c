@@ -2,6 +2,13 @@
 #include "Sys.h"
 #include "gpio.h"
 #include "uart.h"
+/*!
+ * @file time.c
+ * @brief 主要实现定时器初始化
+ * @author jason
+ * @date 2018-10-18
+ * @version ver1.0
+ */
 /*
 	Tout = （（arr+1）*（psc+1））/Tclk ;
 其中：

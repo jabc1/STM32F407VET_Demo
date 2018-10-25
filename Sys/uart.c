@@ -1,6 +1,12 @@
 #include "uart.h"
 #include <stdarg.h>
-
+/*!
+ * @file time.c
+ * @brief 只要实现uart初始化和中断处理
+ * @author jason
+ * @date 2018-10-18
+ * @version ver1.0
+ */
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 

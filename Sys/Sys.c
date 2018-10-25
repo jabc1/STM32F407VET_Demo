@@ -1,4 +1,11 @@
 #include "Sys.h"
+/*!
+ * @file Sys.c
+ * @brief 主实现系统时钟初始化
+ * @author jason
+ * @date 2018-10-18
+ * @version ver1.0
+ */
 /**
   * @brief System Clock Configuration
   * @retval None

@@ -1,4 +1,11 @@
 #include "gpio.h"
+/*!
+ * @file gpio.c
+ * @brief 主要实现gpio重新封装
+ * @author jason
+ * @date 2018-10-18
+ * @version ver1.0
+ */
 void MX_GPIO_Init(void)
 {
 //	GPIO_InitTypeDef GPIO_InitStruct;
