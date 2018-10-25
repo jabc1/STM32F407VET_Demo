@@ -605,6 +605,16 @@
               <FileType>5</FileType>
               <FilePath>.\App\esp8266.h</FilePath>
             </File>
+            <File>
+              <FileName>wifipack.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App\wifipack.c</FilePath>
+            </File>
+            <File>
+              <FileName>wifipack.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\App\wifipack.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

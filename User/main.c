@@ -9,8 +9,7 @@
 #include "fifo.h"
 #include "queue_jk.h"
 #include "esp8266.h"
-
-u8 sendbuff[100];
+#include "wifipack.h"
 
 static void MX_NVIC_Init(void);
 
@@ -37,13 +36,10 @@ int main(void)
 //		}
 //		SysTick_delay_ms(500);
 //		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, !HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_7));
-//		HAL_Delay(1000);
 //		taskrun();
 //		test2run();
 //		esp_8266_send_cmd(CIFSR,"OK",100);
-		//printf("%s","A2 1000,5554443733078,0002,20181025AA,0000,00,0818030626,,,,0000,\r\n");
-		sprintf(sendbuff,"%s","A2 1000,5554443733078,0002,20181025AA,0000,00,0818030626,,,,0000,\r\n");
-		while(esp_8266_send_cmd(sendbuff,"1",100));
+		senf_pack();
 		USART2_Printf("%s\r\n","test");
 		USART2_Printf("mac=%s\r\n",Idinfo.macbuff);
 		USART2_Printf("ip=%03d.%03d.%03d.%03d\r\n",Idinfo.ipbuff[0],Idinfo.ipbuff[1],\
