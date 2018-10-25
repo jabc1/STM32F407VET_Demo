@@ -10,7 +10,7 @@
 #include "queue_jk.h"
 #include "esp8266.h"
 
-
+u8 sendbuff[100];
 
 static void MX_NVIC_Init(void);
 
@@ -26,7 +26,7 @@ int main(void)
 	MX_NVIC_Init();
 	queue_init();
 	esp8266_init();
-	esp8266_softreset();
+	//esp8266_softreset();
 	while (1)
 	{
 //		if(Uart1.status == uart1over)
@@ -41,11 +41,14 @@ int main(void)
 //		taskrun();
 //		test2run();
 //		esp_8266_send_cmd(CIFSR,"OK",100);
+		//printf("%s","A2 1000,5554443733078,0002,20181025AA,0000,00,0818030626,,,,0000,\r\n");
+		sprintf(sendbuff,"%s","A2 1000,5554443733078,0002,20181025AA,0000,00,0818030626,,,,0000,\r\n");
+		while(esp_8266_send_cmd(sendbuff,"1",100));
 		USART2_Printf("%s\r\n","test");
 		USART2_Printf("mac=%s\r\n",Idinfo.macbuff);
 		USART2_Printf("ip=%03d.%03d.%03d.%03d\r\n",Idinfo.ipbuff[0],Idinfo.ipbuff[1],\
 													Idinfo.ipbuff[2],Idinfo.ipbuff[3]);
-		SysTick_delay_xms(1500);
+		SysTick_delay_xms(3500);
 	}
 }
 

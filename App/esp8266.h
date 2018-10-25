@@ -12,7 +12,14 @@
 #define 	RST         "AT+RST\r\n"//复位命令
 
 #define 	CWJAP       "AT+CWJAP=\"LINK_001\",\"0123456789\"\r\n"//连接路由器
+
+#define test
+#ifdef test
+#define 	CIPSTART    "AT+CIPSTART=\"TCP\",\"192.168.1.101\",3033\r\n"//连接远端
+#else
 #define 	CIPSTART    "AT+CIPSTART=\"TCP\",\"119.23.75.37\",3000\r\n"//连接远端
+#endif
+
 #define		CIPMUX		"AT+CIPMUX=0\r\n"//设置但连接，透传模式只能设置但连接
 #define 	CIPMODE1    "AT+CIPMODE=1\r\n"//设置透传模式
 #define 	CIPSEND     "AT+CIPSEND\r\n"//进入透传模式,返回>
