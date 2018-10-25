@@ -28,8 +28,9 @@
 #pragma pack(push,1)
 typedef struct _IDINFO
 {
-	u8 ipbuff[idlen];
-	u8 macbuff[idlen];
+	u8 buff[idlen];
+	u8 ipbuff[5];
+	u8 *mac[6];
 }_IDINFO;
 #pragma pack(pop) 
 
