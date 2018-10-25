@@ -51,5 +51,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle);
 void queue_init(void);
 void taskrun(void);
 void test2run(void);
+void USART2_Printf(const char *fmt, ...);
+void RS485_Send_Data(char *buf,uint32_t len);
 #endif
 

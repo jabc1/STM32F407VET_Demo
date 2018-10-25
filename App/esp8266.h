@@ -17,23 +17,27 @@
 #define 	CIPMODE1    "AT+CIPMODE=1\r\n"//设置透传模式
 #define 	CIPSEND     "AT+CIPSEND\r\n"//进入透传模式,返回>
 
-#define		CLOSE1		"+++"
-#define		CLOSE2		"AT+CIPCLOSE\r\n"//"+++"//关闭透传
+
 
 #define 	CIPSTATUS   "AT+CIPSTATUS\r\n"//查询网络状态
 //查询IP，因为有STA和AP两个模式，所以有两组MAC和IP，常见的是192.168.x.x局域网IP
 #define 	CIFSR       "AT+CIFSR\r\n"
 
+
+#define		BACKAT		"+++"//返回指令模式
+#define		CLOSESER	"AT+CIPCLOSE\r\n"//断开与服务器的连接
+#define		EXITLINK	"AT+CWQAP\r\n"//退出与路由器的连接
+
 #define		idlen		60
-#pragma pack(push,1)
-typedef struct _IDINFO
+
+typedef struct 
 {
 	u8 buff[idlen];
 	u8 ipbuff[4];
-	u8 *mac[6];
 	u8 macbuff[12];
+	u8 *mac[6];
 }_IDINFO;
-#pragma pack(pop) 
+
 
 extern _IDINFO Idinfo;
 

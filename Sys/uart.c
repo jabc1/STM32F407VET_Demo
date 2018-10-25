@@ -1,5 +1,5 @@
 #include "uart.h"
-
+#include <stdarg.h>
 
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
@@ -278,7 +278,25 @@ void USART2_IRQHandler(void)
 
 
 
-
+void USART2_Printf(const char *fmt, ...)
+{
+	char Buff[256];
+	va_list ap;      
+	va_start(ap, fmt);  
+	vsprintf(Buff, fmt, ap);
+	va_end(ap);
+	RS485_Send_Data(Buff,strlen(Buff));
+}
+void RS485_Send_Data(char *buf,uint32_t len)
+{
+	uint16_t  t;
+	for(t=0;t<len;t++)
+	{
+		while((USART1->SR&0X40)==0);
+		USART1->DR=buf[t];
+	}    
+	while((USART1->SR&0X40)==0);
+}
 
 
 
