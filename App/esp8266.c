@@ -45,6 +45,9 @@ u8 get_link_info(u8 *scr)
 		Idinfo.mac[3] = infobuff[10];
 		Idinfo.mac[4] = infobuff[11];
 		Idinfo.mac[5] = infobuff[12];
+		
+		sprintf(Idinfo.macbuff, "%s%s%s%s%s%s",Idinfo.mac[0],Idinfo.mac[1],Idinfo.mac[2], \
+												Idinfo.mac[3],Idinfo.mac[4],Idinfo.mac[5]);
 //		strncpy(&Idinfo.macbuff[0],infobuff[1],4);
 //		strncpy((u8 *)Idinfo.mac,infobuff[7],6);
 
@@ -179,6 +182,7 @@ void esp8266_function()
 void esp8266_init()
 {
 	eps8266_reset();
+	while(esp_8266_send_cmd(AT1,"OK",20));//检查WIFI模块是否在线
 	while(esp_8266_send_cmd("AT\r\n","OK",20));//检查WIFI模块是否在线
 	while(esp_8266_send_cmd("ATE0\r\n","OK",20));//关闭回显
 	esp_8266_send_cmd(CWMODE,"OK",350);//配置wifi mode
@@ -188,9 +192,9 @@ void esp8266_init()
 	esp_8266_send_cmd(CIPMODE1,"OK",300);//设置透传模式
 	esp_8266_send_cmd(CIPSTART,"OK",300);//连接远端
 	while(esp_8266_send_cmd(CIFSR,"STAIP",300));//查询wifi信息
-	esp_8266_send_cmd(CIPSEND,">",200);//进入透传模式
-	
-	printf("%s","A2 1000,5554443733078,0002,20181025AA,0000,00,0818030626,,,,0000,\r\n");
+//	esp_8266_send_cmd(CIPSEND,">",200);//进入透传模式
+//	
+//	printf("%s","A2 1000,5554443733078,0002,20181025AA,0000,00,0818030626,,,,0000,\r\n");
 //	SysTick_delay_ms(200);
 //	printf("%s",CLOSE1);
 //	esp_8266_send_cmd(CLOSE2,"OK",500);

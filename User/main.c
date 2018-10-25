@@ -39,8 +39,7 @@ int main(void)
 //		HAL_Delay(1000);
 //		taskrun();
 //		test2run();
-		printf("%s",Idinfo.ipbuff);
-		//printf("%s",Idinfo.macbuff);
+		printf("%s",Idinfo.macbuff);
 		SysTick_delay_ms(500);
 		
 	}

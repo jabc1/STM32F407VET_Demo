@@ -29,8 +29,9 @@
 typedef struct _IDINFO
 {
 	u8 buff[idlen];
-	u8 ipbuff[5];
+	u8 ipbuff[4];
 	u8 *mac[6];
+	u8 macbuff[12];
 }_IDINFO;
 #pragma pack(pop) 
 
