@@ -26,8 +26,7 @@ int main(void)
 	MX_NVIC_Init();
 	queue_init();
 	esp8266_init();
-	printf("%s","+++");
-	SysTick_delay_xms(1500);
+	esp8266_softreset();
 	while (1)
 	{
 //		if(Uart1.status == uart1over)
@@ -41,11 +40,11 @@ int main(void)
 //		HAL_Delay(1000);
 //		taskrun();
 //		test2run();
-
-		//printf("%s","AT\r\n");
+//		esp_8266_send_cmd(CIFSR,"OK",100);
 		USART2_Printf("%s\r\n","test");
 		USART2_Printf("mac=%s\r\n",Idinfo.macbuff);
-		USART2_Printf("ip=%s\r\n",Idinfo.ipbuff);
+		USART2_Printf("ip=%03d.%03d.%03d.%03d\r\n",Idinfo.ipbuff[0],Idinfo.ipbuff[1],\
+													Idinfo.ipbuff[2],Idinfo.ipbuff[3]);
 		SysTick_delay_xms(1500);
 	}
 }

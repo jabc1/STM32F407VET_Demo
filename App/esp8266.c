@@ -1,11 +1,5 @@
 #include "esp8266.h"
-void eps8266_reset()
-{
-//	SET_GPIO_L(ESP_GPIO);
-//	SysTick_delay_ms(200);
-//	SET_GPIO_H(ESP_GPIO);
-//	SysTick_delay_ms(200);
-}
+
 _IDINFO Idinfo;
 u8 *infobuff[15];
 
@@ -40,18 +34,18 @@ u8 get_link_info(u8 *scr)
 		Idinfo.ipbuff[2] = atoi((char *)infobuff[3]);
 		Idinfo.ipbuff[3] = atoi((char *)infobuff[4]);
 		
-		Idinfo.mac[0] = infobuff[7];
-		Idinfo.mac[1] = infobuff[8];
-		Idinfo.mac[2] = infobuff[9];
-		Idinfo.mac[3] = infobuff[10];
-		Idinfo.mac[4] = infobuff[11];
-		Idinfo.mac[5] = infobuff[12];
-		SysTick_delay_us(20);
-		
+//		Idinfo.mac[0] = infobuff[7];
+//		Idinfo.mac[1] = infobuff[8];
+//		Idinfo.mac[2] = infobuff[9];
+//		Idinfo.mac[3] = infobuff[10];
+//		Idinfo.mac[4] = infobuff[11];
+//		Idinfo.mac[5] = infobuff[12];
 		strcpy (Idinfo.macbuff,infobuff[7]);
 		strcat (Idinfo.macbuff,infobuff[8]);
 		strcat (Idinfo.macbuff,infobuff[9]);
 		strcat (Idinfo.macbuff,infobuff[10]);
+		strcat (Idinfo.macbuff,infobuff[11]);
+		strcat (Idinfo.macbuff,infobuff[12]);
 //		sprintf(Idinfo.macbuff, "%s%s%s%s%s%s",infobuff[7],infobuff[8],infobuff[9], \
 //												infobuff[10],infobuff[11],infobuff[12]);
 //		strncpy(&Idinfo.macbuff[0],infobuff[1],4);
@@ -151,6 +145,22 @@ u8 esp_8266_send_cmd(u8 *cmd,u8 *ack,u16 waittime)
 	}
 	return res;
 }
+
+void eps8266_reset()
+{
+//	SET_GPIO_L(ESP_GPIO);
+//	SysTick_delay_ms(200);
+//	SET_GPIO_H(ESP_GPIO);
+//	SysTick_delay_ms(200);
+}
+void esp8266_softreset()
+{
+	while(esp_8266_send_cmd(BACKAT,"+++",200));
+	SysTick_delay_xms(1500);
+	while(esp_8266_send_cmd(CLOSESER,"OK",200));
+	while(esp_8266_send_cmd(EXITLINK,"OK",200));
+}
+
 void esp8266_function()
 {
 	;
@@ -170,16 +180,8 @@ void esp8266_init()
 	while(esp_8266_send_cmd(CIPMUX,"OK",300));//设置但连接
 	esp_8266_send_cmd(CIPMODE1,"OK",300);//设置透传模式
 	esp_8266_send_cmd(CIPSTART,"OK",300);//连接远端
-
 //	esp_8266_send_cmd(CIPSEND,">",200);//进入透传模式
 //	printf("%s","A2 1000,5554443733078,0002,20181025AA,0000,00,0818030626,,,,0000,\r\n");
-
-//	SysTick_delay_xms(1000);
-//	//esp_8266_send_cmd(CLOSESER,"OK",200);
-//	//esp_8266_send_cmd(EXITLINK,"OK",200);
-//	printf("%s",CLOSESER);
-//	printf("%s",EXITLINK);
-//	SysTick_delay_ms(200);
 
 }
 

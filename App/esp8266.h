@@ -41,15 +41,13 @@ typedef struct
 
 extern _IDINFO Idinfo;
 
-
-
-void eps8266_reset(void);
 u8 esp_8266_send_cmd(u8 *cmd,u8 *ack,u16 waittime);
 u8* esp_8266_check_cmd(u8 *str);
 u8* esp_8266_check_cmd2(u8 *str);
+void eps8266_reset(void);
 void esp8266_init(void);
 void esp8266_function(void);
-
+void esp8266_softreset(void);
 
 
 
