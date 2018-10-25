@@ -6,7 +6,7 @@
 #include "queue_jk.h"
 
 #define 	uart1len		512
-#define 	uart2len		2000
+#define 	uart2len		1024
 
 #define		uart1head		1
 #define		uart1read		2

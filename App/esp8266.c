@@ -7,8 +7,7 @@ u8 get_link_info(u8 *scr)
 {
 	const char *s = ",+:\".\r\n";
 	u8 *token,i=0;
-	
-	
+
 	for(i=0;i<15;i++)
 	{
 		infobuff[i] = NULL;
@@ -18,13 +17,9 @@ u8 get_link_info(u8 *scr)
 	while( token != NULL ) 
 	{
 		infobuff[i++] = token;
-		//printf( "%s\n", token );
 		token = strtok(NULL, s);
 	}
-//	for(i=0;i<15;i++)
-//	{
-//		printf("%s",infobuff[i]);
-//	}
+	
 	if((NULL==strcmp((const char *)"STAIP",infobuff[0])) \
 		&&(NULL==strcmp((const char *)"CIFSR",infobuff[5])) \
 		&&(NULL==strcmp((const char *)"STAMAC",infobuff[6])))
@@ -34,23 +29,14 @@ u8 get_link_info(u8 *scr)
 		Idinfo.ipbuff[2] = atoi((char *)infobuff[3]);
 		Idinfo.ipbuff[3] = atoi((char *)infobuff[4]);
 		
-//		Idinfo.mac[0] = infobuff[7];
-//		Idinfo.mac[1] = infobuff[8];
-//		Idinfo.mac[2] = infobuff[9];
-//		Idinfo.mac[3] = infobuff[10];
-//		Idinfo.mac[4] = infobuff[11];
-//		Idinfo.mac[5] = infobuff[12];
-		strcpy (Idinfo.macbuff,infobuff[7]);
-		strcat (Idinfo.macbuff,infobuff[8]);
-		strcat (Idinfo.macbuff,infobuff[9]);
-		strcat (Idinfo.macbuff,infobuff[10]);
-		strcat (Idinfo.macbuff,infobuff[11]);
-		strcat (Idinfo.macbuff,infobuff[12]);
-//		sprintf(Idinfo.macbuff, "%s%s%s%s%s%s",infobuff[7],infobuff[8],infobuff[9], \
-//												infobuff[10],infobuff[11],infobuff[12]);
-//		strncpy(&Idinfo.macbuff[0],infobuff[1],4);
-//		strncpy((u8 *)Idinfo.mac,infobuff[7],6);
-
+//		strcpy (Idinfo.macbuff,infobuff[7]);
+//		strcat (Idinfo.macbuff,infobuff[8]);
+//		strcat (Idinfo.macbuff,infobuff[9]);
+//		strcat (Idinfo.macbuff,infobuff[10]);
+//		strcat (Idinfo.macbuff,infobuff[11]);
+//		strcat (Idinfo.macbuff,infobuff[12]);
+		sprintf(Idinfo.macbuff, "%s%s%s%s%s%s",infobuff[7],infobuff[8],infobuff[9], \
+												infobuff[10],infobuff[11],infobuff[12]);
 		return true;
 	}
 	else
@@ -103,8 +89,6 @@ u8* esp_8266_check_cmd2(u8 *str)//STAIP
 	{
 		return NULL;
 	}
-	
-	//return (u8*)strx;//返回找到的字符串进行处理
 }
 /*
  *返回0表示发送成功
@@ -166,7 +150,6 @@ void esp8266_function()
 	;
 }
 
-
 void esp8266_init()
 {
 	eps8266_reset();
@@ -180,9 +163,8 @@ void esp8266_init()
 	while(esp_8266_send_cmd(CIPMUX,"OK",300));//设置但连接
 	esp_8266_send_cmd(CIPMODE1,"OK",300);//设置透传模式
 	esp_8266_send_cmd(CIPSTART,"OK",300);//连接远端
-//	esp_8266_send_cmd(CIPSEND,">",200);//进入透传模式
-//	printf("%s","A2 1000,5554443733078,0002,20181025AA,0000,00,0818030626,,,,0000,\r\n");
-
+	esp_8266_send_cmd(CIPSEND,">",200);//进入透传模式
+	printf("%s","A2 1000,5554443733078,0002,20181025AA,0000,00,0818030626,,,,0000,\r\n");
 }
 
 

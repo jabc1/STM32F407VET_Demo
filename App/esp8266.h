@@ -30,14 +30,14 @@
 
 #define		idlen		60
 
+#pragma pack(push,1)
 typedef struct 
 {
 	u8 buff[idlen];
 	u8 ipbuff[4];
 	u8 macbuff[12];
-	u8 *mac[6];
 }_IDINFO;
-
+#pragma pack(pop)
 
 extern _IDINFO Idinfo;
 
